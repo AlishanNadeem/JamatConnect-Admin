@@ -9,6 +9,9 @@ import ChangePassword from '@/modules/ChangePassword'
 import Dashboard from '@/modules/Dashboard'
 import EditProfile from '@/modules/EditProfile'
 import Profile from '@/modules/Profile'
+import Users from '@/modules/Users'
+import CreateUser from '@/modules/Users/Create'
+import EditUser from '@/modules/Users/Edit'
 import { ROUTES } from '@/helpers/routes'
 import ProtectedRoute from './ProtectedRoute'
 import PublicRoute from './PublicRoute'
@@ -37,6 +40,9 @@ const AppRoutes = () => {
               path={ROUTES.BUSINESS_CATEGORY_EDIT}
               element={<EditBusinessCategory />}
             />
+            <Route path={ROUTES.USERS} element={<Users />} />
+            <Route path={ROUTES.USER_CREATE} element={<CreateUser />} />
+            <Route path={ROUTES.USER_EDIT} element={<EditUser />} />
           </Route>
         </Route>
 

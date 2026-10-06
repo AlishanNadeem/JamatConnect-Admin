@@ -1,5 +1,6 @@
 import { Provider } from 'react-redux'
 import { PersistGate } from 'redux-persist/integration/react'
+import { DialogProvider } from '@/components/Dialog/DialogProvider'
 import Loader from '@/components/Loader'
 import { persistor, store } from '@/redux/store'
 import AppRoutes from '@/routes'
@@ -9,7 +10,9 @@ const App = () => {
   return (
     <Provider store={store}>
       <PersistGate loading={<Loader label="Restoring session…" />} persistor={persistor}>
-        <AppRoutes />
+        <DialogProvider>
+          <AppRoutes />
+        </DialogProvider>
       </PersistGate>
     </Provider>
   )

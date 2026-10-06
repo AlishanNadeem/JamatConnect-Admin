@@ -8,6 +8,10 @@ export const ROUTES = {
   BUSINESS_CATEGORIES: '/business-categories',
   BUSINESS_CATEGORY_CREATE: '/business-categories/create',
   BUSINESS_CATEGORY_EDIT: '/business-categories/:id/edit',
+  USERS: '/users',
+  USER_CREATE: '/users/create',
+  USER_EDIT: '/users/:id/edit',
 }
 
 export const businessCategoryEditRoute = (id) => `/business-categories/${id}/edit`
+export const userEditRoute = (id) => `/users/${id}/edit`

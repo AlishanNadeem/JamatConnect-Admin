@@ -41,6 +41,44 @@ export const userApi = baseApi.injectEndpoints({
         body,
       }),
     }),
+    getUsers: builder.query({
+      query: (params = {}) => ({
+        url: '/user/get',
+        method: 'GET',
+        params,
+      }),
+      providesTags: (result) =>
+        result?.data
+          ? [
+              ...result.data.map(({ _id }) => ({ type: 'Users', id: _id })),
+              { type: 'Users', id: 'LIST' },
+            ]
+          : [{ type: 'Users', id: 'LIST' }],
+    }),
+    getUserById: builder.query({
+      query: (id) => `/user/get/${id}`,
+      providesTags: (_result, _error, id) => [{ type: 'Users', id }],
+    }),
+    createUser: builder.mutation({
+      query: (body) => ({
+        url: '/user/create',
+        method: 'POST',
+        body,
+      }),
+      invalidatesTags: [{ type: 'Users', id: 'LIST' }],
+    }),
+    updateUser: builder.mutation({
+      query: ({ id, body }) => ({
+        url: `/user/update/${id}`,
+        method: 'PATCH',
+        body,
+      }),
+      invalidatesTags: (_result, _error, { id }) => [
+        { type: 'Users', id },
+        { type: 'Users', id: 'LIST' },
+        'Profile',
+      ],
+    }),
   }),
 })
 
@@ -49,4 +87,8 @@ export const {
   useLazyGetMyProfileQuery,
   useEditProfileMutation,
   useChangePasswordMutation,
+  useGetUsersQuery,
+  useGetUserByIdQuery,
+  useCreateUserMutation,
+  useUpdateUserMutation,
 } = userApi

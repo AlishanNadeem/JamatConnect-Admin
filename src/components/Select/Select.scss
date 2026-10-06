@@ -16,6 +16,12 @@
     color: var(--color-black);
     cursor: pointer;
     transition: border-color var(--transition), box-shadow var(--transition);
+
+    &:disabled {
+      cursor: not-allowed;
+      background: #f3f6f3;
+      color: var(--color-dark-gray);
+    }
   }
 
   &__value {

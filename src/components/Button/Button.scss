@@ -33,6 +33,16 @@
     border: 1.5px solid var(--color-lightest-primary);
   }
 
+  &--danger {
+    color: var(--color-white);
+    background: linear-gradient(135deg, #e11d48 0%, #be123c 100%);
+    box-shadow: 0 10px 24px rgba(190, 18, 60, 0.28);
+
+    &:hover:not(:disabled) {
+      box-shadow: 0 14px 28px rgba(190, 18, 60, 0.34);
+    }
+  }
+
   &:disabled {
     opacity: 0.65;
     cursor: not-allowed;

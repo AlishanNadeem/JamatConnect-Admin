@@ -1,5 +1,6 @@
 import { useEffect, useMemo, useState } from 'react'
 import { useNavigate } from 'react-router-dom'
+import { useDialog } from '@/components/Dialog/DialogProvider'
 import {
   useDeleteBusinessCategoryMutation,
   useGetBusinessCategoriesQuery,
@@ -10,6 +11,7 @@ const PAGE_SIZE = 10
 
 const useBusinessCategoryController = () => {
   const navigate = useNavigate()
+  const { confirm } = useDialog()
   const [search_input, setSearchInput] = useState('')
   const [search, setSearch] = useState('')
   const [status, setStatus] = useState('all')
@@ -60,9 +62,14 @@ const useBusinessCategoryController = () => {
   }
 
   const onDelete = async (category) => {
-    const confirmed = window.confirm(
-      `Delete "${category.name}"? This action cannot be undone.`
-    )
+    const confirmed = await confirm({
+      title: 'Delete category?',
+      description: `Delete "${category.name}"? This action cannot be undone.`,
+      confirmLabel: 'Delete',
+      cancelLabel: 'Cancel',
+      variant: 'danger',
+      confirmVariant: 'danger',
+    })
     if (!confirmed) return
 
     setActionError('')

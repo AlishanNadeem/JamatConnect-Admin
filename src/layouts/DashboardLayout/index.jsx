@@ -2,6 +2,7 @@ import { useEffect, useRef, useState } from 'react'
 import { NavLink, Outlet, useLocation, useNavigate } from 'react-router-dom'
 import { useDispatch, useSelector } from 'react-redux'
 import logo from '@/assets/images/logo.png'
+import { useDialog } from '@/components/Dialog/DialogProvider'
 import { ROUTES } from '@/helpers/routes'
 import { authApi, useLogoutMutation } from '@/redux/apis/Auth'
 import { baseApi } from '@/redux/apis/Base'
@@ -21,6 +22,28 @@ const NAV_ITEMS = [
           stroke="currentColor"
           strokeWidth="1.6"
           strokeLinejoin="round"
+        />
+      </svg>
+    ),
+  },
+  {
+    to: ROUTES.USERS,
+    label: 'Users',
+    end: false,
+    icon: (
+      <svg width="18" height="18" viewBox="0 0 24 24" fill="none" aria-hidden>
+        <path
+          d="M16 20v-1.5a3.5 3.5 0 0 0-3.5-3.5h-5A3.5 3.5 0 0 0 4 18.5V20"
+          stroke="currentColor"
+          strokeWidth="1.7"
+          strokeLinecap="round"
+        />
+        <circle cx="9.5" cy="8" r="3" stroke="currentColor" strokeWidth="1.7" />
+        <path
+          d="M20 20v-1.2a2.8 2.8 0 0 0-2.1-2.7M16.2 5.2a3 3 0 0 1 0 5.6"
+          stroke="currentColor"
+          strokeWidth="1.7"
+          strokeLinecap="round"
         />
       </svg>
     ),
@@ -56,11 +79,14 @@ const PAGE_TITLES = {
   [ROUTES.CHANGE_PASSWORD]: 'Change Password',
   [ROUTES.BUSINESS_CATEGORIES]: 'Business Categories',
   [ROUTES.BUSINESS_CATEGORY_CREATE]: 'Create Category',
+  [ROUTES.USERS]: 'Users',
+  [ROUTES.USER_CREATE]: 'Create User',
 }
 
 const getPageTitle = (pathname) => {
   if (PAGE_TITLES[pathname]) return PAGE_TITLES[pathname]
   if (/^\/business-categories\/[^/]+\/edit$/.test(pathname)) return 'Edit Category'
+  if (/^\/users\/[^/]+\/edit$/.test(pathname)) return 'Edit User'
   return 'Admin'
 }
 
@@ -69,6 +95,7 @@ const DashboardLayout = () => {
   const dispatch = useDispatch()
   const navigate = useNavigate()
   const location = useLocation()
+  const { confirm } = useDialog()
   const [logout, { isLoading }] = useLogoutMutation()
   const [menu_open, setMenuOpen] = useState(false)
   const [sidebar_open, setSidebarOpen] = useState(false)
@@ -100,6 +127,17 @@ const DashboardLayout = () => {
 
   const onLogout = async () => {
     setMenuOpen(false)
+
+    const confirmed = await confirm({
+      title: 'Log out?',
+      description: 'Are you sure you want to log out of your admin account?',
+      confirmLabel: 'Log out',
+      cancelLabel: 'Stay signed in',
+      variant: 'warning',
+      confirmVariant: 'danger',
+    })
+    if (!confirmed) return
+
     try {
       await logout({}).unwrap()
     } catch {

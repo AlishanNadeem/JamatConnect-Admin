@@ -1,6 +1,7 @@
 import { useMemo } from 'react'
 import { useNavigate } from 'react-router-dom'
 import { useDispatch } from 'react-redux'
+import { useDialog } from '@/components/Dialog/DialogProvider'
 import { ROUTES } from '@/helpers/routes'
 import { useGetMyProfileQuery } from '@/redux/apis/User'
 import { useLogoutMutation, authApi } from '@/redux/apis/Auth'
@@ -10,6 +11,7 @@ import { clearCredentials } from '@/redux/slices/auth.slice'
 const useProfileController = () => {
   const navigate = useNavigate()
   const dispatch = useDispatch()
+  const { confirm } = useDialog()
   const { data, isLoading, isFetching, isError, error, refetch } = useGetMyProfileQuery()
   const [logout, { isLoading: is_logging_out }] = useLogoutMutation()
 
@@ -19,7 +21,14 @@ const useProfileController = () => {
   const onChangePassword = () => navigate(ROUTES.CHANGE_PASSWORD)
 
   const onLogout = async () => {
-    const confirmed = window.confirm('Are you sure you want to logout?')
+    const confirmed = await confirm({
+      title: 'Log out?',
+      description: 'Are you sure you want to log out of your admin account?',
+      confirmLabel: 'Log out',
+      cancelLabel: 'Stay signed in',
+      variant: 'warning',
+      confirmVariant: 'danger',
+    })
     if (!confirmed) return
 
     try {
