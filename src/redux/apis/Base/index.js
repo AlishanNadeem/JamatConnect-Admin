@@ -1,6 +1,5 @@
 import { createApi, fetchBaseQuery } from '@reduxjs/toolkit/query/react'
 import { BASE_URL } from '@/config/env'
-import { clearCredentials } from '@/redux/slices/auth.slice'
 
 const rawBaseQuery = fetchBaseQuery({
   baseUrl: BASE_URL,
@@ -16,7 +15,7 @@ const baseQueryWithReauth = async (args, api, extraOptions) => {
   const result = await rawBaseQuery(args, api, extraOptions)
 
   if (result?.error?.status === 401) {
-    api.dispatch(clearCredentials())
+    api.dispatch({ type: 'auth/clearCredentials' })
   }
 
   return result
@@ -25,6 +24,6 @@ const baseQueryWithReauth = async (args, api, extraOptions) => {
 export const baseApi = createApi({
   reducerPath: 'api',
   baseQuery: baseQueryWithReauth,
-  tagTypes: [],
+  tagTypes: ['Profile'],
   endpoints: () => ({}),
 })

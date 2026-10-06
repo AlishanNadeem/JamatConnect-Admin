@@ -61,9 +61,12 @@ const Input = forwardRef(
     const [show_password, setShowPassword] = useState(false)
     const is_password = type === 'password'
     const input_type = is_password ? (show_password ? 'text' : 'password') : type
+    const has_icon = icon === 'mail' || icon === 'lock' || is_password
 
     return (
-      <div className={`jc-input ${error ? 'jc-input--error' : ''} ${className}`}>
+      <div
+        className={`jc-input ${has_icon ? 'jc-input--with-icon' : ''} ${is_password ? 'jc-input--password' : ''} ${error ? 'jc-input--error' : ''} ${className}`}
+      >
         {label ? (
           <label className="jc-input__label">
             {label}

@@ -7,6 +7,11 @@
   color: var(--color-dark-gray);
   background: var(--color-background);
 
+  &--compact {
+    min-height: 240px;
+    background: transparent;
+  }
+
   &__ring {
     width: 36px;
     height: 36px;

@@ -32,7 +32,7 @@
   &__control {
     width: 100%;
     min-height: 52px;
-    padding: 0 44px 0 44px;
+    padding: 0 16px;
     border: 1.5px solid var(--color-light-gray);
     border-radius: var(--radius-md);
     background: var(--color-white);
@@ -48,6 +48,20 @@
       border-color: var(--color-primary);
       box-shadow: 0 0 0 4px rgba(28, 111, 56, 0.12);
     }
+
+    &:disabled {
+      background: #f3f6f3;
+      color: var(--color-dark-gray);
+      cursor: not-allowed;
+    }
+  }
+
+  &--with-icon &__control {
+    padding-left: 44px;
+  }
+
+  &--password &__control {
+    padding-right: 44px;
   }
 
   &__toggle {

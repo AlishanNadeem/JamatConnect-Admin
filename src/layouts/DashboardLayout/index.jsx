@@ -1,67 +1,239 @@
+import { useEffect, useRef, useState } from 'react'
+import { NavLink, Outlet, useLocation, useNavigate } from 'react-router-dom'
 import { useDispatch, useSelector } from 'react-redux'
-import { Outlet, useNavigate } from 'react-router-dom'
-import { motion } from 'framer-motion'
 import logo from '@/assets/images/logo.png'
-import Button from '@/components/Button'
 import { ROUTES } from '@/helpers/routes'
-import { useLogoutMutation } from '@/redux/apis/Auth'
+import { authApi, useLogoutMutation } from '@/redux/apis/Auth'
+import { baseApi } from '@/redux/apis/Base'
 import { selectUser } from '@/redux/selectors'
 import { clearCredentials } from '@/redux/slices/auth.slice'
 import './DashboardLayout.scss'
+
+const NAV_ITEMS = [
+  {
+    to: ROUTES.DASHBOARD,
+    label: 'Dashboard',
+    end: true,
+    icon: (
+      <svg width="18" height="18" viewBox="0 0 24 24" fill="none" aria-hidden>
+        <path
+          d="M4 4.75h6.5v6.5H4v-6.5Zm9.5 0H20v6.5h-6.5v-6.5ZM4 12.75h6.5V19.25H4v-6.5Zm9.5 0H20v6.5h-6.5v-6.5Z"
+          stroke="currentColor"
+          strokeWidth="1.6"
+          strokeLinejoin="round"
+        />
+      </svg>
+    ),
+  },
+]
+
+const PAGE_TITLES = {
+  [ROUTES.DASHBOARD]: 'Dashboard',
+  [ROUTES.PROFILE]: 'My Profile',
+  [ROUTES.EDIT_PROFILE]: 'Edit Profile',
+  [ROUTES.CHANGE_PASSWORD]: 'Change Password',
+}
 
 const DashboardLayout = () => {
   const user = useSelector(selectUser)
   const dispatch = useDispatch()
   const navigate = useNavigate()
+  const location = useLocation()
   const [logout, { isLoading }] = useLogoutMutation()
+  const [menu_open, setMenuOpen] = useState(false)
+  const [sidebar_open, setSidebarOpen] = useState(false)
+  const menu_ref = useRef(null)
+
+  const page_title = PAGE_TITLES[location.pathname] || 'Admin'
+  const initials = (user?.name || 'A')
+    .split(' ')
+    .filter(Boolean)
+    .slice(0, 2)
+    .map((part) => part[0]?.toUpperCase())
+    .join('')
+
+  useEffect(() => {
+    setSidebarOpen(false)
+    setMenuOpen(false)
+  }, [location.pathname])
+
+  useEffect(() => {
+    const onPointerDown = (event) => {
+      if (!menu_ref.current?.contains(event.target)) {
+        setMenuOpen(false)
+      }
+    }
+
+    document.addEventListener('pointerdown', onPointerDown)
+    return () => document.removeEventListener('pointerdown', onPointerDown)
+  }, [])
 
   const onLogout = async () => {
+    setMenuOpen(false)
     try {
       await logout({}).unwrap()
     } catch {
       // Clear local session even if API logout fails
     } finally {
       dispatch(clearCredentials())
+      dispatch(baseApi.util.resetApiState())
+      dispatch(authApi.util.resetApiState())
       navigate(ROUTES.LOGIN, { replace: true })
     }
   }
 
   return (
-    <div className="dashboard-layout">
-      <header className="dashboard-layout__header">
-        <div className="dashboard-layout__brand">
+    <div className={`dashboard-layout ${sidebar_open ? 'is-sidebar-open' : ''}`}>
+      <div
+        className="dashboard-layout__overlay"
+        onClick={() => setSidebarOpen(false)}
+        aria-hidden={!sidebar_open}
+      />
+
+      <aside className="dashboard-layout__sidebar">
+        <button
+          type="button"
+          className="dashboard-layout__brand"
+          onClick={() => navigate(ROUTES.DASHBOARD)}
+        >
           <img src={logo} alt="" className="dashboard-layout__logo" />
           <div>
-            <p className="dashboard-layout__title">Jamat Connect</p>
-            <p className="dashboard-layout__subtitle">Admin Panel</p>
+            <p className="dashboard-layout__brand-name">Jamat Connect</p>
+            <p className="dashboard-layout__brand-tag">Admin</p>
           </div>
-        </div>
+        </button>
 
-        <div className="dashboard-layout__user">
-          <div className="dashboard-layout__user-meta">
-            <p className="dashboard-layout__user-name">{user?.name || 'Admin'}</p>
-            <p className="dashboard-layout__user-email">{user?.email}</p>
+        <div className="dashboard-layout__nav-section">
+          <p className="dashboard-layout__nav-label">Main</p>
+          <nav className="dashboard-layout__nav">
+            {NAV_ITEMS.map((item) => (
+              <NavLink
+                key={item.to}
+                to={item.to}
+                end={item.end}
+                className={({ isActive }) =>
+                  `dashboard-layout__link ${isActive ? 'is-active' : ''}`
+                }
+              >
+                <span className="dashboard-layout__link-icon">{item.icon}</span>
+                <span>{item.label}</span>
+              </NavLink>
+            ))}
+          </nav>
+        </div>
+      </aside>
+
+      <div className="dashboard-layout__content">
+        <header className="dashboard-layout__header">
+          <div className="dashboard-layout__header-left">
+            <button
+              type="button"
+              className="dashboard-layout__menu-toggle"
+              onClick={() => setSidebarOpen((open) => !open)}
+              aria-label="Toggle navigation"
+            >
+              <span />
+              <span />
+              <span />
+            </button>
+            <div>
+              <p className="dashboard-layout__eyebrow">Jamat Connect Admin</p>
+              <h1 className="dashboard-layout__page-title">{page_title}</h1>
+            </div>
           </div>
-          <Button
-            fullWidth={false}
-            variant="ghost"
-            loading={isLoading}
-            onClick={onLogout}
-            className="dashboard-layout__logout"
-          >
-            Log Out
-          </Button>
-        </div>
-      </header>
 
-      <motion.main
-        className="dashboard-layout__main"
-        initial={{ opacity: 0, y: 12 }}
-        animate={{ opacity: 1, y: 0 }}
-        transition={{ duration: 0.4 }}
-      >
-        <Outlet />
-      </motion.main>
+          <div className="dashboard-layout__profile" ref={menu_ref}>
+            <button
+              type="button"
+              className="dashboard-layout__avatar-btn"
+              onClick={() => setMenuOpen((open) => !open)}
+              aria-expanded={menu_open}
+              aria-haspopup="menu"
+            >
+              <span className="dashboard-layout__avatar">
+                {user?.image_url ? (
+                  <img src={user.image_url} alt="" />
+                ) : (
+                  <span>{initials || 'A'}</span>
+                )}
+              </span>
+              <span className="dashboard-layout__avatar-meta">
+                <span className="dashboard-layout__user-name">{user?.name || 'Admin'}</span>
+                <span className="dashboard-layout__user-role">Administrator</span>
+              </span>
+              <svg
+                className="dashboard-layout__caret"
+                width="14"
+                height="14"
+                viewBox="0 0 24 24"
+                fill="none"
+                aria-hidden
+              >
+                <path
+                  d="m6 9 6 6 6-6"
+                  stroke="currentColor"
+                  strokeWidth="1.8"
+                  strokeLinecap="round"
+                  strokeLinejoin="round"
+                />
+              </svg>
+            </button>
+
+            {menu_open ? (
+              <div className="dashboard-layout__menu" role="menu">
+                <div className="dashboard-layout__menu-head">
+                  <p>{user?.name || 'Admin'}</p>
+                  <span>{user?.email}</span>
+                </div>
+                <button
+                  type="button"
+                  role="menuitem"
+                  onClick={() => {
+                    setMenuOpen(false)
+                    navigate(ROUTES.PROFILE)
+                  }}
+                >
+                  My Profile
+                </button>
+                <button
+                  type="button"
+                  role="menuitem"
+                  onClick={() => {
+                    setMenuOpen(false)
+                    navigate(ROUTES.EDIT_PROFILE)
+                  }}
+                >
+                  Edit Profile
+                </button>
+                <button
+                  type="button"
+                  role="menuitem"
+                  onClick={() => {
+                    setMenuOpen(false)
+                    navigate(ROUTES.CHANGE_PASSWORD)
+                  }}
+                >
+                  Change Password
+                </button>
+                <div className="dashboard-layout__menu-divider" />
+                <button
+                  type="button"
+                  role="menuitem"
+                  className="is-danger"
+                  disabled={isLoading}
+                  onClick={onLogout}
+                >
+                  {isLoading ? 'Logging out…' : 'Log Out'}
+                </button>
+              </div>
+            ) : null}
+          </div>
+        </header>
+
+        <main className="dashboard-layout__main">
+          <Outlet />
+        </main>
+      </div>
     </div>
   )
 }

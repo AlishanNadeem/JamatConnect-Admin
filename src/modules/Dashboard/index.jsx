@@ -12,7 +12,7 @@ const Dashboard = () => {
       <p className="dashboard-home__eyebrow">Welcome</p>
       <h1 className="dashboard-home__title">Admin dashboard is ready</h1>
       <p className="dashboard-home__copy">
-        Auth is connected. Additional admin modules can be added here next.
+        Auth and profile modules are connected. Additional admin modules can be added here next.
       </p>
     </motion.section>
   )

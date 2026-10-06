@@ -2,8 +2,9 @@ import { combineReducers, configureStore } from '@reduxjs/toolkit'
 import { persistReducer, persistStore } from 'redux-persist'
 import { authApi } from '@/redux/apis/Auth'
 import { baseApi } from '@/redux/apis/Base'
-import authReducer from '@/redux/slices/auth.slice'
 import { encryptedLocalStorage } from '@/helpers/storage'
+import authReducer from '@/redux/slices/auth.slice'
+import '@/redux/apis/User'
 
 const persist_config = {
   key: 'jamatconnect-admin',

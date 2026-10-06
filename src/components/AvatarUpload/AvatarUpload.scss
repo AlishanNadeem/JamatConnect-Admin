@@ -1,0 +1,70 @@
+.avatar-upload {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 10px;
+
+  &__preview {
+    position: relative;
+    width: 96px;
+    height: 96px;
+    border: none;
+    border-radius: 50%;
+    padding: 0;
+    overflow: visible;
+    cursor: pointer;
+    background: var(--color-lightest-primary);
+    box-shadow: 0 10px 24px rgba(28, 111, 56, 0.16);
+
+    img {
+      width: 100%;
+      height: 100%;
+      object-fit: cover;
+      border-radius: 50%;
+    }
+  }
+
+  &__initials {
+    display: grid;
+    place-items: center;
+    width: 100%;
+    height: 100%;
+    border-radius: 50%;
+    font-family: var(--font-primary);
+    font-size: 34px;
+    font-weight: 700;
+    color: var(--color-dark-primary);
+  }
+
+  &__badge {
+    position: absolute;
+    top: -2px;
+    right: -2px;
+    width: 28px;
+    height: 28px;
+    border-radius: 50%;
+    display: grid;
+    place-items: center;
+    background: var(--color-white);
+    color: var(--color-primary);
+    font-size: 20px;
+    font-weight: 700;
+    line-height: 1;
+    box-shadow: 0 4px 12px rgba(18, 78, 42, 0.18);
+  }
+
+  &__input {
+    display: none;
+  }
+
+  &__hint {
+    font-size: 13px;
+    color: var(--color-gray);
+  }
+
+  &__error {
+    font-size: 12.5px;
+    color: var(--color-danger);
+    font-weight: 500;
+  }
+}

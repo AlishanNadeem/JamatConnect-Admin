@@ -9,16 +9,22 @@
   --color-gray: #9ca3af;
   --color-light-gray: #dfdfdf;
   --color-dark-gray: #585858;
+  --color-overlay: rgba(0, 0, 0, 0.75);
   --color-danger: #f20026;
   --color-light-danger: #ffe0e4;
   --color-success: #1c6f38;
   --color-light-success: #dfffe3;
-  --font-display: 'Cormorant Garamond', Georgia, serif;
-  --font-body: 'Manrope', 'Segoe UI', sans-serif;
+  --color-warning: #b45309;
+  --color-light-warning: #fef3c7;
+  --color-info: #2563eb;
+  --color-light-info: #e0eaff;
+  --font-primary: 'Montserrat', 'Segoe UI', sans-serif;
+  --font-body: var(--font-primary);
+  --font-display: var(--font-primary);
   --radius-sm: 8px;
   --radius-md: 12px;
-  --radius-lg: 20px;
-  --shadow-soft: 0 18px 50px rgba(18, 78, 42, 0.12);
+  --radius-lg: 16px;
+  --shadow-soft: 0 10px 30px rgba(28, 111, 56, 0.08);
   --transition: 0.25s ease;
 }
 
@@ -37,7 +43,7 @@ body,
 }
 
 body {
-  font-family: var(--font-body);
+  font-family: var(--font-primary);
   color: var(--color-black);
   background: var(--color-background);
   -webkit-font-smoothing: antialiased;
@@ -45,7 +51,9 @@ body {
 }
 
 button,
-input {
+input,
+select,
+textarea {
   font: inherit;
 }
 

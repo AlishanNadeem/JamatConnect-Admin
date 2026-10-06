@@ -1,5 +1,6 @@
 import { createSlice } from '@reduxjs/toolkit'
 import { authApi } from '@/redux/apis/Auth'
+import { userApi } from '@/redux/apis/User'
 
 const initialState = {
   user: null,
@@ -33,6 +34,12 @@ const authSlice = createSlice({
         state.user = null
         state.token = null
         state.is_authenticated = false
+      })
+      .addMatcher(userApi.endpoints.getMyProfile.matchFulfilled, (state, action) => {
+        state.user = action.payload.data
+      })
+      .addMatcher(userApi.endpoints.editProfile.matchFulfilled, (state, action) => {
+        state.user = action.payload.data.user
       })
   },
 })
