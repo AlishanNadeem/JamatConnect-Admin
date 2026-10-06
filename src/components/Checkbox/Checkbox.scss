@@ -1,0 +1,43 @@
+.jc-checkbox {
+  display: inline-flex;
+  align-items: center;
+  gap: 10px;
+  cursor: pointer;
+  user-select: none;
+
+  &__input {
+    position: absolute;
+    opacity: 0;
+    pointer-events: none;
+
+    &:checked + .jc-checkbox__box {
+      background: var(--color-primary);
+      border-color: var(--color-primary);
+      color: var(--color-white);
+    }
+
+    &:focus-visible + .jc-checkbox__box {
+      box-shadow: 0 0 0 4px rgba(28, 111, 56, 0.15);
+    }
+  }
+
+  &__box {
+    width: 20px;
+    height: 20px;
+    border: 1.5px solid var(--color-light-gray);
+    border-radius: 6px;
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    color: transparent;
+    background: var(--color-white);
+    transition: all var(--transition);
+    flex-shrink: 0;
+  }
+
+  &__label {
+    font-size: 14px;
+    font-weight: 500;
+    color: var(--color-dark-gray);
+  }
+}

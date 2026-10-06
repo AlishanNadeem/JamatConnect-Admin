@@ -1,0 +1,31 @@
+.dashboard-home {
+  max-width: 640px;
+  padding: 28px;
+  border-radius: 22px;
+  background: rgba(255, 255, 255, 0.9);
+  border: 1px solid rgba(220, 239, 226, 0.95);
+  box-shadow: var(--shadow-soft);
+
+  &__eyebrow {
+    font-size: 12px;
+    font-weight: 700;
+    letter-spacing: 0.16em;
+    text-transform: uppercase;
+    color: var(--color-light-primary);
+  }
+
+  &__title {
+    margin-top: 8px;
+    font-family: var(--font-display);
+    font-size: 40px;
+    line-height: 1.1;
+    color: var(--color-dark-primary);
+  }
+
+  &__copy {
+    margin-top: 12px;
+    font-size: 15px;
+    line-height: 1.6;
+    color: var(--color-dark-gray);
+  }
+}

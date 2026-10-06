@@ -1,0 +1,60 @@
+.jc-btn {
+  position: relative;
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  min-height: 52px;
+  padding: 0 24px;
+  border: none;
+  border-radius: var(--radius-md);
+  font-weight: 700;
+  font-size: 15px;
+  letter-spacing: 0.02em;
+  cursor: pointer;
+  transition: opacity var(--transition), box-shadow var(--transition);
+
+  &--full {
+    width: 100%;
+  }
+
+  &--primary {
+    color: var(--color-white);
+    background: linear-gradient(135deg, var(--color-primary) 0%, var(--color-dark-primary) 100%);
+    box-shadow: 0 10px 24px rgba(28, 111, 56, 0.28);
+
+    &:hover:not(:disabled) {
+      box-shadow: 0 14px 28px rgba(28, 111, 56, 0.34);
+    }
+  }
+
+  &--ghost {
+    color: var(--color-primary);
+    background: transparent;
+    border: 1.5px solid var(--color-lightest-primary);
+  }
+
+  &:disabled {
+    opacity: 0.65;
+    cursor: not-allowed;
+  }
+
+  &__label--hidden {
+    opacity: 0;
+  }
+
+  &__spinner {
+    position: absolute;
+    width: 20px;
+    height: 20px;
+    border: 2.5px solid rgba(255, 255, 255, 0.35);
+    border-top-color: #fff;
+    border-radius: 50%;
+    animation: jc-spin 0.7s linear infinite;
+  }
+}
+
+@keyframes jc-spin {
+  to {
+    transform: rotate(360deg);
+  }
+}

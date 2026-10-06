@@ -1,0 +1,35 @@
+.login-form {
+  display: flex;
+  flex-direction: column;
+  gap: 18px;
+
+  &__fields {
+    display: flex;
+    flex-direction: column;
+    gap: 16px;
+  }
+
+  &__row {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    gap: 12px;
+    flex-wrap: wrap;
+  }
+
+  &__forgot {
+    font-size: 14px;
+    font-weight: 600;
+    color: var(--color-primary);
+    text-decoration: underline;
+    text-underline-offset: 3px;
+
+    &:hover {
+      color: var(--color-dark-primary);
+    }
+  }
+
+  &__actions {
+    margin-top: 10px;
+  }
+}
