@@ -2,6 +2,9 @@ import { BrowserRouter, Navigate, Route, Routes } from 'react-router-dom'
 import DashboardLayout from '@/layouts/DashboardLayout'
 import ForgotPassword from '@/modules/Auth/ForgotPassword'
 import Login from '@/modules/Auth/Login'
+import BusinessCategory from '@/modules/BusinessCategory'
+import CreateBusinessCategory from '@/modules/BusinessCategory/Create'
+import EditBusinessCategory from '@/modules/BusinessCategory/Edit'
 import ChangePassword from '@/modules/ChangePassword'
 import Dashboard from '@/modules/Dashboard'
 import EditProfile from '@/modules/EditProfile'
@@ -25,6 +28,15 @@ const AppRoutes = () => {
             <Route path={ROUTES.PROFILE} element={<Profile />} />
             <Route path={ROUTES.EDIT_PROFILE} element={<EditProfile />} />
             <Route path={ROUTES.CHANGE_PASSWORD} element={<ChangePassword />} />
+            <Route path={ROUTES.BUSINESS_CATEGORIES} element={<BusinessCategory />} />
+            <Route
+              path={ROUTES.BUSINESS_CATEGORY_CREATE}
+              element={<CreateBusinessCategory />}
+            />
+            <Route
+              path={ROUTES.BUSINESS_CATEGORY_EDIT}
+              element={<EditBusinessCategory />}
+            />
           </Route>
         </Route>
 

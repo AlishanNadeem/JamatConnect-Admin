@@ -20,7 +20,23 @@ const PageHeader = ({
       <div className="page-header__copy">
         {backTo ? (
           <Link to={backTo} className="page-header__back">
-            ← {backLabel}
+            <svg
+              className="page-header__back-icon"
+              width="20"
+              height="20"
+              viewBox="0 0 24 24"
+              fill="none"
+              aria-hidden
+            >
+              <path
+                d="M15 6 9 12l6 6"
+                stroke="currentColor"
+                strokeWidth="2.4"
+                strokeLinecap="round"
+                strokeLinejoin="round"
+              />
+            </svg>
+            <span>{backLabel}</span>
           </Link>
         ) : null}
         {eyebrow ? <p className="page-header__eyebrow">{eyebrow}</p> : null}

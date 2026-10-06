@@ -9,6 +9,11 @@ export const convertToFormData = (data = {}) => {
       return
     }
 
+    if (typeof value === 'boolean') {
+      form_data.append(key, value ? 'true' : 'false')
+      return
+    }
+
     form_data.append(key, String(value))
   })
 

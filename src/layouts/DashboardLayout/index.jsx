@@ -25,6 +25,28 @@ const NAV_ITEMS = [
       </svg>
     ),
   },
+  {
+    to: ROUTES.BUSINESS_CATEGORIES,
+    label: 'Business Categories',
+    end: false,
+    icon: (
+      <svg width="18" height="18" viewBox="0 0 24 24" fill="none" aria-hidden>
+        <path
+          d="M4.5 7.5h15M4.5 12h15M4.5 16.5h15"
+          stroke="currentColor"
+          strokeWidth="1.7"
+          strokeLinecap="round"
+        />
+        <path
+          d="M7 4.5v15M12 4.5v15M17 4.5v15"
+          stroke="currentColor"
+          strokeWidth="1.7"
+          strokeLinecap="round"
+          opacity="0.35"
+        />
+      </svg>
+    ),
+  },
 ]
 
 const PAGE_TITLES = {
@@ -32,6 +54,14 @@ const PAGE_TITLES = {
   [ROUTES.PROFILE]: 'My Profile',
   [ROUTES.EDIT_PROFILE]: 'Edit Profile',
   [ROUTES.CHANGE_PASSWORD]: 'Change Password',
+  [ROUTES.BUSINESS_CATEGORIES]: 'Business Categories',
+  [ROUTES.BUSINESS_CATEGORY_CREATE]: 'Create Category',
+}
+
+const getPageTitle = (pathname) => {
+  if (PAGE_TITLES[pathname]) return PAGE_TITLES[pathname]
+  if (/^\/business-categories\/[^/]+\/edit$/.test(pathname)) return 'Edit Category'
+  return 'Admin'
 }
 
 const DashboardLayout = () => {
@@ -44,7 +74,7 @@ const DashboardLayout = () => {
   const [sidebar_open, setSidebarOpen] = useState(false)
   const menu_ref = useRef(null)
 
-  const page_title = PAGE_TITLES[location.pathname] || 'Admin'
+  const page_title = getPageTitle(location.pathname)
   const initials = (user?.name || 'A')
     .split(' ')
     .filter(Boolean)
