@@ -11,7 +11,7 @@ import EditProfile from '@/modules/EditProfile'
 import Profile from '@/modules/Profile'
 import Users from '@/modules/Users'
 import CreateUser from '@/modules/Users/Create'
-import EditUser from '@/modules/Users/Edit'
+import UserDetail from '@/modules/Users/Detail'
 import { ROUTES } from '@/helpers/routes'
 import ProtectedRoute from './ProtectedRoute'
 import PublicRoute from './PublicRoute'
@@ -42,7 +42,7 @@ const AppRoutes = () => {
             />
             <Route path={ROUTES.USERS} element={<Users />} />
             <Route path={ROUTES.USER_CREATE} element={<CreateUser />} />
-            <Route path={ROUTES.USER_EDIT} element={<EditUser />} />
+            <Route path={ROUTES.USER_DETAIL} element={<UserDetail />} />
           </Route>
         </Route>
 

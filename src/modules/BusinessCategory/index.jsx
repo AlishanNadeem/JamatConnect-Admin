@@ -124,63 +124,102 @@ const BusinessCategory = () => {
                   </tr>
                 </thead>
                 <tbody>
-                  {values.categories.map((category) => (
-                    <tr key={category._id}>
-                      <td>
-                        <div className="business-category-table__identity">
-                          <span className="business-category-table__thumb">
-                            {category.image_url ? (
-                              <img src={category.image_url} alt="" />
-                            ) : (
-                              <span>{category.name?.[0]?.toUpperCase() || 'C'}</span>
-                            )}
-                          </span>
-                          <div>
-                            <p className="business-category-table__name">{category.name}</p>
-                            <p className="business-category-table__id">
-                              ID · {String(category._id).slice(-6).toUpperCase()}
-                            </p>
+                  {values.categories.map((category) => {
+                    const is_toggling =
+                      values.toggling_category_id === category._id
+                    const is_deleting_row =
+                      values.deleting_category_id === category._id
+                    const has_businesses = (category.business_count || 0) > 0
+
+                    return (
+                      <tr key={category._id}>
+                        <td>
+                          <div className="business-category-table__identity">
+                            <span className="business-category-table__thumb">
+                              {category.image_url ? (
+                                <img src={category.image_url} alt="" />
+                              ) : (
+                                <span>{category.name?.[0]?.toUpperCase() || 'C'}</span>
+                              )}
+                            </span>
+                            <div>
+                              <p className="business-category-table__name">{category.name}</p>
+                              <p className="business-category-table__id">
+                                ID · {String(category._id).slice(-6).toUpperCase()}
+                                {has_businesses
+                                  ? ` · ${category.business_count} business${category.business_count === 1 ? '' : 'es'}`
+                                  : ''}
+                              </p>
+                            </div>
                           </div>
-                        </div>
-                      </td>
-                      <td>
-                        <p className="business-category-table__description">
-                          {category.description || 'No description'}
-                        </p>
-                      </td>
-                      <td>
-                        <StatusBadge active={category.active} />
-                      </td>
-                      <td>
-                        <span className="business-category-table__date">
-                          {formatDate(category.updatedAt || category.createdAt)}
-                        </span>
-                      </td>
-                      <td className="is-actions">
-                        <div className="business-category-table__actions">
-                          <button
-                            type="button"
-                            className="is-edit"
-                            title="Edit category"
-                            onClick={() => functions.onEdit(category._id)}
-                          >
-                            <EditIcon />
-                            <span>Edit</span>
-                          </button>
-                          <button
-                            type="button"
-                            className="is-danger"
-                            title="Delete category"
-                            disabled={values.is_deleting}
-                            onClick={() => functions.onDelete(category)}
-                          >
-                            <DeleteIcon />
-                            <span>Delete</span>
-                          </button>
-                        </div>
-                      </td>
-                    </tr>
-                  ))}
+                        </td>
+                        <td>
+                          <p className="business-category-table__description">
+                            {category.description || 'No description'}
+                          </p>
+                        </td>
+                        <td>
+                          <StatusBadge active={category.active} />
+                        </td>
+                        <td>
+                          <span className="business-category-table__date">
+                            {formatDate(category.updatedAt || category.createdAt)}
+                          </span>
+                        </td>
+                        <td className="is-actions">
+                          <div className="data-table-actions">
+                            <button
+                              type="button"
+                              className="is-edit"
+                              title="Edit category"
+                              onClick={() => functions.onEdit(category._id)}
+                            >
+                              <EditIcon />
+                              <span>Edit</span>
+                            </button>
+                            <button
+                              type="button"
+                              className={category.active ? 'is-inactive' : 'is-active'}
+                              title={category.active ? 'Mark inactive' : 'Mark active'}
+                              disabled={
+                                is_toggling ||
+                                values.is_updating ||
+                                values.is_deleting
+                              }
+                              onClick={() => functions.onToggleActive(category)}
+                            >
+                              <span>
+                                {is_toggling
+                                  ? 'Updating…'
+                                  : category.active
+                                    ? 'Mark Inactive'
+                                    : 'Mark Active'}
+                              </span>
+                            </button>
+                            <button
+                              type="button"
+                              className="is-danger"
+                              title={
+                                has_businesses
+                                  ? `Cannot delete: ${category.business_count} business${category.business_count === 1 ? '' : 'es'} registered`
+                                  : 'Delete category'
+                              }
+                              disabled={
+                                has_businesses ||
+                                is_deleting_row ||
+                                values.is_deleting ||
+                                values.is_updating
+                              }
+                              onClick={() => functions.onDelete(category)}
+                            >
+                              <DeleteIcon />
+                              <span>{is_deleting_row ? 'Deleting…' : 'Delete'}</span>
+                            </button>
+                          </div>
+                        </td>
+                      </tr>
+                    )
+                  })}
                 </tbody>
               </table>
             </div>

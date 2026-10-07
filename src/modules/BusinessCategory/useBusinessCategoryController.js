@@ -1,22 +1,26 @@
 import { useEffect, useMemo, useState } from 'react'
 import { useNavigate } from 'react-router-dom'
 import { useDialog } from '@/components/Dialog/DialogProvider'
+import { convertToFormData } from '@/helpers/general'
+import { ROUTES, businessCategoryEditRoute } from '@/helpers/routes'
 import {
   useDeleteBusinessCategoryMutation,
   useGetBusinessCategoriesQuery,
+  useUpdateBusinessCategoryMutation,
 } from '@/redux/apis/BusinessCategory'
-import { ROUTES, businessCategoryEditRoute } from '@/helpers/routes'
 
 const PAGE_SIZE = 10
 
 const useBusinessCategoryController = () => {
   const navigate = useNavigate()
-  const { confirm } = useDialog()
+  const { confirm, acknowledge } = useDialog()
   const [search_input, setSearchInput] = useState('')
   const [search, setSearch] = useState('')
   const [status, setStatus] = useState('all')
   const [page, setPage] = useState(1)
   const [action_error, setActionError] = useState('')
+  const [toggling_category_id, setTogglingCategoryId] = useState(null)
+  const [deleting_category_id, setDeletingCategoryId] = useState(null)
 
   const query_params = useMemo(() => {
     const params = {
@@ -34,6 +38,7 @@ const useBusinessCategoryController = () => {
   const { data, isLoading, isFetching, isError, error, refetch } =
     useGetBusinessCategoriesQuery(query_params)
 
+  const [updateCategory, { isLoading: is_updating }] = useUpdateBusinessCategoryMutation()
   const [deleteCategory, { isLoading: is_deleting }] = useDeleteBusinessCategoryMutation()
 
   useEffect(() => {
@@ -61,7 +66,56 @@ const useBusinessCategoryController = () => {
     setPage(1)
   }
 
+  const onToggleActive = async (category) => {
+    const next_active = !category.active
+    const action_label = next_active ? 'activate' : 'deactivate'
+    const confirmed = await confirm({
+      title: next_active ? 'Activate category?' : 'Deactivate category?',
+      description: `Are you sure you want to ${action_label} "${category.name}"?`,
+      confirmLabel: next_active ? 'Activate' : 'Deactivate',
+      cancelLabel: 'Cancel',
+      variant: next_active ? 'info' : 'danger',
+      confirmVariant: next_active ? 'primary' : 'danger',
+    })
+    if (!confirmed) return
+
+    setActionError('')
+    setTogglingCategoryId(category._id)
+
+    try {
+      await updateCategory({
+        id: category._id,
+        body: convertToFormData({ active: next_active }),
+      }).unwrap()
+
+      await acknowledge({
+        title: next_active ? 'Category activated' : 'Category deactivated',
+        description: `"${category.name}" has been ${next_active ? 'activated' : 'deactivated'} successfully.`,
+        confirmLabel: 'Done',
+        variant: 'success',
+      })
+    } catch (err) {
+      setActionError(
+        err?.data?.message || err?.error || `Unable to ${action_label} category.`
+      )
+    } finally {
+      setTogglingCategoryId(null)
+    }
+  }
+
   const onDelete = async (category) => {
+    const business_count = category.business_count || 0
+
+    if (business_count > 0) {
+      await acknowledge({
+        title: 'Cannot delete category',
+        description: `"${category.name}" has ${business_count} registered business${business_count === 1 ? '' : 'es'} and cannot be deleted.`,
+        confirmLabel: 'Got it',
+        variant: 'warning',
+      })
+      return
+    }
+
     const confirmed = await confirm({
       title: 'Delete category?',
       description: `Delete "${category.name}"? This action cannot be undone.`,
@@ -73,13 +127,29 @@ const useBusinessCategoryController = () => {
     if (!confirmed) return
 
     setActionError('')
+    setDeletingCategoryId(category._id)
 
     try {
       await deleteCategory(category._id).unwrap()
+
+      await acknowledge({
+        title: 'Category deleted',
+        description: `"${category.name}" has been deleted successfully.`,
+        confirmLabel: 'Done',
+        variant: 'success',
+      })
     } catch (err) {
-      setActionError(
-        err?.data?.message || err?.error || 'Unable to delete business category.'
-      )
+      await acknowledge({
+        title: 'Unable to delete',
+        description:
+          err?.data?.message ||
+          err?.error ||
+          'Unable to delete business category.',
+        confirmLabel: 'Got it',
+        variant: 'danger',
+      })
+    } finally {
+      setDeletingCategoryId(null)
     }
   }
 
@@ -92,7 +162,10 @@ const useBusinessCategoryController = () => {
       isLoading: isLoading || isFetching,
       isError,
       error_message: error?.data?.message || 'Unable to load business categories.',
+      is_updating,
       is_deleting,
+      toggling_category_id,
+      deleting_category_id,
       action_error,
     },
     functions: {
@@ -101,6 +174,7 @@ const useBusinessCategoryController = () => {
       setPage,
       onCreate,
       onEdit,
+      onToggleActive,
       onDelete,
       refetch,
       clearActionError: () => setActionError(''),

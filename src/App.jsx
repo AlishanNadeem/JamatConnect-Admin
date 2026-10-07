@@ -5,6 +5,7 @@ import Loader from '@/components/Loader'
 import { persistor, store } from '@/redux/store'
 import AppRoutes from '@/routes'
 import '@/styles/global.scss'
+import '@/styles/data-table.scss'
 
 const App = () => {
   return (

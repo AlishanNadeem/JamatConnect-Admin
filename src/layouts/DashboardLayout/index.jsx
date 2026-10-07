@@ -86,7 +86,7 @@ const PAGE_TITLES = {
 const getPageTitle = (pathname) => {
   if (PAGE_TITLES[pathname]) return PAGE_TITLES[pathname]
   if (/^\/business-categories\/[^/]+\/edit$/.test(pathname)) return 'Edit Category'
-  if (/^\/users\/[^/]+\/edit$/.test(pathname)) return 'Edit User'
+  if (/^\/users\/(?!create$)[^/]+$/.test(pathname)) return 'User Details'
   return 'Admin'
 }
 
@@ -163,12 +163,9 @@ const DashboardLayout = () => {
           type="button"
           className="dashboard-layout__brand"
           onClick={() => navigate(ROUTES.DASHBOARD)}
+          aria-label="Jamat Connect Admin"
         >
-          <img src={logo} alt="" className="dashboard-layout__logo" />
-          <div>
-            <p className="dashboard-layout__brand-name">Jamat Connect</p>
-            <p className="dashboard-layout__brand-tag">Admin</p>
-          </div>
+          <img src={logo} alt="Jamat Connect" className="dashboard-layout__logo" />
         </button>
 
         <div className="dashboard-layout__nav-section">

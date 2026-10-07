@@ -1,0 +1,99 @@
+/* Shared list-table chrome for Users / Business Categories */
+
+.data-table-actions {
+  display: inline-flex;
+  justify-content: flex-end;
+  align-items: center;
+  gap: 6px;
+
+  button {
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    gap: 5px;
+    border: 1px solid transparent;
+    border-radius: 8px;
+    min-height: 30px;
+    padding: 0 10px;
+    font-size: 12px;
+    font-weight: 700;
+    line-height: 1;
+    cursor: pointer;
+    transition: background 0.18s ease, border-color 0.18s ease, color 0.18s ease;
+
+    svg {
+      width: 14px;
+      height: 14px;
+      flex-shrink: 0;
+    }
+
+    &.is-edit {
+      color: var(--color-primary);
+      background: var(--color-lightest-primary);
+      border-color: #cfe8d7;
+
+      &:hover:not(:disabled) {
+        background: #cfe8d7;
+        color: var(--color-dark-primary);
+      }
+    }
+
+    &.is-view {
+      color: var(--color-dark-gray);
+      background: #f2f4f7;
+      border-color: #e4e7ec;
+
+      &:hover:not(:disabled) {
+        background: #e4e7ec;
+        color: var(--color-black);
+      }
+    }
+
+    &.is-danger {
+      color: var(--color-danger);
+      background: var(--color-light-danger);
+      border-color: #ffd0d7;
+
+      &:hover:not(:disabled) {
+        background: #ffd0d7;
+      }
+    }
+
+    &.is-active {
+      color: var(--color-dark-primary);
+      background: var(--color-lightest-primary);
+      border-color: #cfe8d7;
+
+      &:hover:not(:disabled) {
+        background: #cfe8d7;
+      }
+    }
+
+    &.is-inactive {
+      color: var(--color-dark-gray);
+      background: #f2f4f7;
+      border-color: #e4e7ec;
+
+      &:hover:not(:disabled) {
+        background: #e4e7ec;
+      }
+    }
+
+    &:disabled {
+      opacity: 0.45;
+      cursor: not-allowed;
+    }
+  }
+}
+
+@media (max-width: 720px) {
+  .data-table-actions button span {
+    display: none;
+  }
+
+  .data-table-actions button {
+    width: 30px;
+    min-width: 30px;
+    padding: 0;
+  }
+}

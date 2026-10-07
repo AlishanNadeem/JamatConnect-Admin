@@ -2,9 +2,8 @@ import { useEffect, useMemo, useState } from 'react'
 import { useNavigate } from 'react-router-dom'
 import { useSelector } from 'react-redux'
 import { useDialog } from '@/components/Dialog/DialogProvider'
-import { convertToFormData } from '@/helpers/general'
-import { ROUTES, userEditRoute } from '@/helpers/routes'
-import { useGetUsersQuery, useUpdateUserMutation } from '@/redux/apis/User'
+import { ROUTES, userDetailRoute } from '@/helpers/routes'
+import { useGetUsersQuery, useToggleUserActiveMutation } from '@/redux/apis/User'
 import { selectUser } from '@/redux/selectors'
 
 const PAGE_SIZE = 10
@@ -38,7 +37,7 @@ const useUsersController = () => {
   const { data, isLoading, isFetching, isError, error, refetch } =
     useGetUsersQuery(query_params)
 
-  const [updateUser, { isLoading: is_updating }] = useUpdateUserMutation()
+  const [toggleUserActive, { isLoading: is_updating }] = useToggleUserActiveMutation()
 
   useEffect(() => {
     const timer = setTimeout(() => {
@@ -58,7 +57,7 @@ const useUsersController = () => {
   }
 
   const onCreate = () => navigate(ROUTES.USER_CREATE)
-  const onEdit = (id) => navigate(userEditRoute(id))
+  const onView = (id) => navigate(userDetailRoute(id))
 
   const onStatusChange = (value) => {
     setStatus(value)
@@ -96,10 +95,7 @@ const useUsersController = () => {
     setTogglingUserId(user._id)
 
     try {
-      await updateUser({
-        id: user._id,
-        body: convertToFormData({ active: next_active }),
-      }).unwrap()
+      await toggleUserActive(user._id).unwrap()
 
       await acknowledge({
         title: next_active ? 'User activated' : 'User deactivated',
@@ -137,7 +133,7 @@ const useUsersController = () => {
       onRoleChange,
       setPage,
       onCreate,
-      onEdit,
+      onView,
       onToggleActive,
       refetch,
       clearActionError: () => setActionError(''),

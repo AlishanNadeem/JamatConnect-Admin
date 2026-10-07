@@ -7,6 +7,7 @@ import Pagination from '@/components/Pagination'
 import SearchInput from '@/components/SearchInput'
 import Select from '@/components/Select'
 import StatusBadge from '@/components/StatusBadge'
+import { Eye } from 'lucide-react'
 import { formatDate, formatPhone } from '@/helpers/general'
 import useUsersController from './useUsersController'
 import './Users.scss'
@@ -23,17 +24,6 @@ const ROLE_OPTIONS = [
   { value: 'admin', label: 'Admin' },
 ]
 
-const EditIcon = () => (
-  <svg width="15" height="15" viewBox="0 0 24 24" fill="none" aria-hidden>
-    <path
-      d="m4 20 4.5-1.1L19.4 8a1.5 1.5 0 0 0 0-2.1L18.1 4.6a1.5 1.5 0 0 0-2.1 0L5.1 15.5 4 20Z"
-      stroke="currentColor"
-      strokeWidth="1.7"
-      strokeLinejoin="round"
-    />
-  </svg>
-)
-
 const Users = () => {
   const { values, functions } = useUsersController()
 
@@ -41,7 +31,7 @@ const Users = () => {
     <div className="users-page">
       <PageHeader
         title="Manage users"
-        subtitle="View, create, and update platform users"
+        subtitle="View, create, and manage user account status"
         actions={
           <Button fullWidth={false} onClick={functions.onCreate}>
             Add User
@@ -161,15 +151,15 @@ const Users = () => {
                           <span className="users-table__date">{formatDate(user.createdAt)}</span>
                         </td>
                         <td className="is-actions">
-                          <div className="users-table__actions">
+                          <div className="data-table-actions">
                             <button
                               type="button"
-                              className="is-edit"
-                              title="Edit user"
-                              onClick={() => functions.onEdit(user._id)}
+                              className="is-view"
+                              title="View details"
+                              onClick={() => functions.onView(user._id)}
                             >
-                              <EditIcon />
-                              <span>Edit</span>
+                              <Eye />
+                              <span>View Details</span>
                             </button>
                             <button
                               type="button"

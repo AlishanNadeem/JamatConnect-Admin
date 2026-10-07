@@ -67,13 +67,12 @@ export const userApi = baseApi.injectEndpoints({
       }),
       invalidatesTags: [{ type: 'Users', id: 'LIST' }],
     }),
-    updateUser: builder.mutation({
-      query: ({ id, body }) => ({
-        url: `/user/update/${id}`,
+    toggleUserActive: builder.mutation({
+      query: (id) => ({
+        url: `/user/toggle-active/${id}`,
         method: 'PATCH',
-        body,
       }),
-      invalidatesTags: (_result, _error, { id }) => [
+      invalidatesTags: (_result, _error, id) => [
         { type: 'Users', id },
         { type: 'Users', id: 'LIST' },
         'Profile',
@@ -90,5 +89,5 @@ export const {
   useGetUsersQuery,
   useGetUserByIdQuery,
   useCreateUserMutation,
-  useUpdateUserMutation,
+  useToggleUserActiveMutation,
 } = userApi
