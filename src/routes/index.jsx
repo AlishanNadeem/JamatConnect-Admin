@@ -9,6 +9,8 @@ import ChangePassword from '@/modules/ChangePassword'
 import Dashboard from '@/modules/Dashboard'
 import EditProfile from '@/modules/EditProfile'
 import Profile from '@/modules/Profile'
+import Feedbacks from '@/modules/Feedbacks'
+import FeedbackDetail from '@/modules/Feedbacks/Detail'
 import Users from '@/modules/Users'
 import CreateUser from '@/modules/Users/Create'
 import UserDetail from '@/modules/Users/Detail'
@@ -43,6 +45,8 @@ const AppRoutes = () => {
             <Route path={ROUTES.USERS} element={<Users />} />
             <Route path={ROUTES.USER_CREATE} element={<CreateUser />} />
             <Route path={ROUTES.USER_DETAIL} element={<UserDetail />} />
+            <Route path={ROUTES.FEEDBACKS} element={<Feedbacks />} />
+            <Route path={ROUTES.FEEDBACK_DETAIL} element={<FeedbackDetail />} />
           </Route>
         </Route>
 

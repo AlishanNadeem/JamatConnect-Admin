@@ -70,6 +70,27 @@ const NAV_ITEMS = [
       </svg>
     ),
   },
+  {
+    to: ROUTES.FEEDBACKS,
+    label: 'Feedbacks',
+    end: false,
+    icon: (
+      <svg width="18" height="18" viewBox="0 0 24 24" fill="none" aria-hidden>
+        <path
+          d="M4.5 6.5h15v9.5a2 2 0 0 1-2 2h-7.2L6 21.5v-3.5H6.5a2 2 0 0 1-2-2V6.5Z"
+          stroke="currentColor"
+          strokeWidth="1.7"
+          strokeLinejoin="round"
+        />
+        <path
+          d="M8.5 10h7M8.5 13.5h5"
+          stroke="currentColor"
+          strokeWidth="1.7"
+          strokeLinecap="round"
+        />
+      </svg>
+    ),
+  },
 ]
 
 const PAGE_TITLES = {
@@ -81,12 +102,14 @@ const PAGE_TITLES = {
   [ROUTES.BUSINESS_CATEGORY_CREATE]: 'Create Category',
   [ROUTES.USERS]: 'Users',
   [ROUTES.USER_CREATE]: 'Create User',
+  [ROUTES.FEEDBACKS]: 'Feedbacks',
 }
 
 const getPageTitle = (pathname) => {
   if (PAGE_TITLES[pathname]) return PAGE_TITLES[pathname]
   if (/^\/business-categories\/[^/]+\/edit$/.test(pathname)) return 'Edit Category'
   if (/^\/users\/(?!create$)[^/]+$/.test(pathname)) return 'User Details'
+  if (/^\/feedbacks\/[^/]+$/.test(pathname)) return 'Feedback Details'
   return 'Admin'
 }
 

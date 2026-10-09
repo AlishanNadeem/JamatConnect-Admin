@@ -6,6 +6,7 @@ import { encryptedLocalStorage } from '@/helpers/storage'
 import authReducer from '@/redux/slices/auth.slice'
 import '@/redux/apis/User'
 import '@/redux/apis/BusinessCategory'
+import '@/redux/apis/Feedback'
 
 const persist_config = {
   key: 'jamatconnect-admin',

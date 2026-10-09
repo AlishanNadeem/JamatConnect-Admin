@@ -1,9 +1,13 @@
 import './StatusBadge.scss'
 
-const StatusBadge = ({ active }) => {
+const StatusBadge = ({
+  active,
+  activeLabel = 'Active',
+  inactiveLabel = 'Inactive',
+}) => {
   return (
     <span className={`status-badge ${active ? 'is-active' : 'is-inactive'}`}>
-      {active ? 'Active' : 'Inactive'}
+      {active ? activeLabel : inactiveLabel}
     </span>
   )
 }

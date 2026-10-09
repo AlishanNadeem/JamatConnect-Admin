@@ -11,7 +11,10 @@ export const ROUTES = {
   USERS: '/users',
   USER_CREATE: '/users/create',
   USER_DETAIL: '/users/:id',
+  FEEDBACKS: '/feedbacks',
+  FEEDBACK_DETAIL: '/feedbacks/:id',
 }
 
 export const businessCategoryEditRoute = (id) => `/business-categories/${id}/edit`
 export const userDetailRoute = (id) => `/users/${id}`
+export const feedbackDetailRoute = (id) => `/feedbacks/${id}`
