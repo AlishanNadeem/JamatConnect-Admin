@@ -3,6 +3,7 @@ import { NavLink, Outlet, useLocation, useNavigate } from 'react-router-dom'
 import { useDispatch, useSelector } from 'react-redux'
 import logo from '@/assets/images/logo.png'
 import { useDialog } from '@/components/Dialog/DialogProvider'
+import { APP_VERSION } from '@/config/env'
 import { ROUTES } from '@/helpers/routes'
 import { authApi, useLogoutMutation } from '@/redux/apis/Auth'
 import { baseApi } from '@/redux/apis/Base'
@@ -209,6 +210,8 @@ const DashboardLayout = () => {
             ))}
           </nav>
         </div>
+
+        <p className="dashboard-layout__version">v{APP_VERSION}</p>
       </aside>
 
       <div className="dashboard-layout__content">
