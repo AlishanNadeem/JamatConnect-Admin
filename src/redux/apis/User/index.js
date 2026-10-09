@@ -78,6 +78,26 @@ export const userApi = baseApi.injectEndpoints({
         'Profile',
       ],
     }),
+    toggleUserReferral: builder.mutation({
+      query: (id) => ({
+        url: `/user/toggle-referral/${id}`,
+        method: 'PATCH',
+      }),
+      invalidatesTags: (_result, _error, id) => [
+        { type: 'Users', id },
+        { type: 'Users', id: 'LIST' },
+      ],
+    }),
+    regenerateUserReferral: builder.mutation({
+      query: (id) => ({
+        url: `/user/regenerate-referral/${id}`,
+        method: 'PATCH',
+      }),
+      invalidatesTags: (_result, _error, id) => [
+        { type: 'Users', id },
+        { type: 'Users', id: 'LIST' },
+      ],
+    }),
   }),
 })
 
@@ -90,4 +110,6 @@ export const {
   useGetUserByIdQuery,
   useCreateUserMutation,
   useToggleUserActiveMutation,
+  useToggleUserReferralMutation,
+  useRegenerateUserReferralMutation,
 } = userApi

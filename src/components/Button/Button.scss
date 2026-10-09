@@ -31,6 +31,11 @@
     color: var(--color-primary);
     background: transparent;
     border: 1.5px solid var(--color-lightest-primary);
+
+    .jc-btn__spinner {
+      border-color: rgba(28, 111, 56, 0.25);
+      border-top-color: currentColor;
+    }
   }
 
   &--danger {
@@ -60,6 +65,16 @@
     border-top-color: #fff;
     border-radius: 50%;
     animation: jc-spin 0.7s linear infinite;
+  }
+
+  &.is-deactivate .jc-btn__spinner {
+    border-color: rgba(159, 18, 57, 0.25);
+    border-top-color: #9f1239;
+  }
+
+  &.is-regenerate .jc-btn__spinner {
+    border-color: rgba(18, 78, 42, 0.25);
+    border-top-color: var(--color-dark-primary);
   }
 }
 

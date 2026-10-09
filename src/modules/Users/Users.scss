@@ -141,7 +141,7 @@
   &__you {
     display: inline-flex;
     padding: 2px 7px;
-    border-radius: 999px;
+    border-radius: 6px;
     background: var(--color-lightest-primary);
     color: var(--color-dark-primary);
     font-size: 10px;
@@ -163,7 +163,7 @@
   &__role {
     display: inline-flex;
     padding: 5px 10px;
-    border-radius: 999px;
+    border-radius: 6px;
     font-size: 11px;
     font-weight: 700;
     letter-spacing: 0.04em;
